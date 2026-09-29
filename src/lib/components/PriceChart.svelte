@@ -1,9 +1,9 @@
 <script>
-	import { formatCurrency, titleScore } from '$lib/analysis.js';
+	import { formatCurrency } from '$lib/analysis.js';
 
 	/** @typedef {{id:string, price:number, title:string, storeName:string, storeColor?:string, condition?:string, currency?:string}} PricedItem */
 	/** @type {{ products: PricedItem[], bestDeal?: PricedItem|null, currency?: string }} */
-	let { products, bestDeal, currency = 'USD' } = $props();
+	let { products, bestDeal, currency = 'INR' } = $props();
 
 	/** @param {number[]} arr @param {number} q */
 	function percentile(arr, q) {
@@ -67,12 +67,12 @@
 	});
 </script>
 
-<div class="w-full rounded-2xl border border-slate-800 bg-slate-900/50 p-5">
+<div class="w-full border-2 border-border-term bg-ink p-5">
 	<div class="flex items-center justify-between">
-		<h3 class="text-sm font-semibold text-slate-200">Price Distribution</h3>
-		<div class="flex items-center gap-2 text-xs text-slate-400">
-			<span class="inline-flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-sm bg-violet-500"></span>Listings</span>
-			<span class="inline-flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-emerald-400"></span>Best Deal</span>
+		<h3 class="term-head font-mono text-sm text-chalk">Price Distribution</h3>
+		<div class="flex items-center gap-2 font-mono text-xs text-chalk-dim">
+			<span class="inline-flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-none bg-signal"></span>listings</span>
+			<span class="inline-flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-none bg-good"></span>best deal</span>
 		</div>
 	</div>
 
@@ -81,9 +81,9 @@
 			<svg viewBox="0 0 {W} {H}" class="w-full">
 				{#each [0, 1, 2, 3, 4] as i}
 					{@const pct = /** @type {number} */ (i * 25)}
-					<line x1="{PAD.right}" y1={yFor(pct)} x2="{W - 8}" y2={yFor(pct)} class="stroke-slate-800" stroke-dasharray="3 4" />
+					<line x1="{PAD.right}" y1={yFor(pct)} x2="{W - 8}" y2={yFor(pct)} class="stroke-[#4d4e51]" stroke-dasharray="3 4" />
 					{#if pct === 75 || pct === 25}
-						<text x="{PAD.right - 6}" y={yFor(pct) + 3} class="fill-slate-600" font-size="9" text-anchor="end">{pct}%</text>
+						<text x="{PAD.right - 6}" y={yFor(pct) + 3} class="fill-[#76767f]" font-size="9" text-anchor="end">{pct}%</text>
 					{/if}
 				{/each}
 
@@ -92,7 +92,7 @@
 					{@const bx = 14 + i * bw}
 					{@const by = yFor(bin.percent)}
 					{#if bin.count}
-						<rect x={bx + 2} y={by} width={bw - 6} height={chartH - by + PAD.top - 2} rx="5" class="fill-violet-500/70 transition-all hover:fill-violet-400" />
+						<rect x={bx + 2} y={by} width={bw - 6} height={chartH - by + PAD.top - 2} rx="0" class="fill-signal/80 transition-opacity hover:opacity-70" />
 					{/if}
 				{/each}
 
@@ -102,27 +102,27 @@
 					{#if bdIndex >= 0}
 						{@const bw = (W - PAD.right - 14) / bins.length}
 						{@const cx = 14 + bdIndex * bw + bw / 2}
-						<line x1={cx} y1={PAD.top} x2={cx} y2={H - 4} stroke="#34d399" stroke-width="2" stroke-dasharray="5 4" />
+						<line x1={cx} y1={PAD.top} x2={cx} y2={H - 4} stroke="#7bd88f" stroke-width="2" stroke-dasharray="5 4" />
 					{/if}
 				{/if}
 			</svg>
 
-			<div class="mt-2 flex flex-wrap items-center gap-1 font-mono text-[10px] text-slate-400">
-				<span class="text-emerald-300">▲</span>
+			<div class="mt-2 flex flex-wrap items-center gap-1 font-mono text-[10px] text-chalk-dim">
+				<span class="text-signal">▲</span>
 				<span>{pricingSummary}</span>
 			</div>
 		</div>
 	{:else}
-		<div class="mt-4 flex h-40 items-center justify-center rounded-xl border border-dashed border-slate-800 text-sm text-slate-500">No pricing data to chart</div>
+		<div class="mt-4 flex h-40 items-center justify-center border-2 border-dashed border-border-term font-mono text-sm text-chalk-dim">no pricing data to chart</div>
 	{/if}
 
 	{#if tooltip}
-		<div class="mt-3 rounded-xl border border-slate-700 bg-slate-900 px-4 py-2.5 text-xs">
+		<div class="mt-3 border-2 border-signal bg-ink-soft px-4 py-2.5 font-mono text-xs text-chalk">
 			<div class="flex items-center justify-between gap-3">
-				<span class="line-clamp-1 font-medium text-slate-200">{tooltip.title}</span>
-				<span class="shrink-0 font-bold text-emerald-300">{formatCurrency(tooltip.price, tooltip.currency || currency)}</span>
+				<span class="line-clamp-1 font-medium text-chalk">{tooltip.title}</span>
+				<span class="shrink-0 font-bold text-signal">{formatCurrency(tooltip.price, tooltip.currency || currency)}</span>
 			</div>
-			<span class="text-slate-500">{tooltip.storeName} · {tooltip.condition || 'Sale'}</span>
+			<span class="text-chalk-dim">{tooltip.storeName} · {tooltip.condition || 'Sale'}</span>
 		</div>
 	{/if}
 </div>

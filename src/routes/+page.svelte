@@ -140,30 +140,39 @@
 </script>
 
 <svelte:head>
-	<title>PricePulse — Find the Best Price</title>
-	<meta name="description" content="Scrape leading marketplaces with Firecrawl and instantly surface the best deal." />
+	<title>comparatio.swag — Find the Best Price</title>
+	<meta name="description" content="Scalp Flipkart, Amazon India, Snapdeal & Meesho with Firecrawl and surface the smartest deal in ₹ for your budget." />
 </svelte:head>
 
-<div class="min-h-screen bg-[#0b1120] text-slate-200">
-	<div class="pointer-events-none fixed inset-x-0 top-0 h-96 overflow-hidden">
-		<div class="absolute -top-24 left-1/2 h-72 w-[600px] -translate-x-1/2 rounded-full bg-violet-600/20 blur-3xl"></div>
-		<div class="absolute top-10 left-10 h-40 w-40 rounded-full bg-fuchsia-600/10 blur-3xl"></div>
-		<div class="absolute top-16 right-16 h-40 w-40 rounded-full bg-sky-600/10 blur-3xl"></div>
-	</div>
+<div class="min-h-screen bg-ink text-chalk">
+	<!-- terminal header / masthead (structure kept, styling swapped) -->
+	<header class="mx-auto flex max-w-6xl items-center justify-between px-4 py-6 sm:px-6">
+		<a href="/" class="term-link font-mono text-sm text-chalk no-underline">
+			<span class="font-bold text-signal">$</span> comparatio.swag
+		</a>
+		<nav class="hidden items-center gap-5 font-mono text-sm sm:flex">
+			<a href="#search" class="text-chalk no-underline transition-colors hover:text-signal">search</a>
+			<a href="#activity" class="text-chalk no-underline transition-colors hover:text-signal">activity</a>
+			<a href="#results" class="text-chalk no-underline transition-colors hover:text-signal">results</a>
+			<a href="https://github.com/TuxTerm/comparatio" target="_blank" rel="noreferrer" class="text-chalk no-underline transition-colors hover:text-signal">src</a>
+		</nav>
+	</header>
 
-	<div class="pointer-events-none fixed inset-x-0 bottom-0 h-64 bg-gradient-to-t from-[#0b1120] to-transparent"></div>
+	<hr class="border-t border-dashed border-border-term" />
 
-	<main class="relative z-10 mx-auto max-w-6xl px-4 pt-10 sm:px-6">
-		<section class="text-center">
-			<div class="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-1.5 text-xs font-medium text-violet-300">
-				<span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-				Powered by Firecrawl AI extraction
+	<main class="relative z-10 mx-auto max-w-6xl px-4 pt-12 sm:px-6">
+		<section id="search" class="text-center">
+			<div class="inline-flex items-center gap-2 border border-signal/60 bg-signal/5 px-3 py-1 font-mono text-xs text-signal">
+				<span class="h-2 w-2 animate-pulse rounded-none bg-signal"></span>
+				scrape --engine firecrawl --markets in
 			</div>
-			<h1 class="mt-6 text-4xl font-extrabold tracking-tight text-white sm:text-6xl" style="line-height: 1.05;">
-				Never overpay again.
+			<h1 class="mt-8 font-mono text-3xl font-bold leading-tight text-chalk sm:text-5xl">
+				[sudo] never pay <span class="bg-signal px-2 text-ink">full price</span>
 			</h1>
-			<p class="mx-auto mt-4 max-w-2xl text-base text-slate-400 sm:text-lg">
-				Search any product. We scrape <span class="text-slate-200">Flipkart</span>, <span class="text-slate-200">Amazon India</span>, <span class="text-slate-200">Snapdeal</span> &amp; <span class="text-slate-200">Meesho</span> live, compare every source and recommend the smartest deal in ₹ for your budget.
+			<p class="mx-auto mt-5 max-w-2xl font-mono text-sm text-chalk-dim sm:text-base">
+				<span class="text-signal">$</span> Search any product. We scrape
+				<span class="text-chalk">Flipkart</span>, <span class="text-chalk">Amazon India</span>, <span class="text-chalk">Snapdeal</span> &amp;
+				<span class="text-chalk">Meesho</span> live, diff every source and recommend the smartest deal in ₹ for your budget.
 			</p>
 		</section>
 
@@ -173,26 +182,26 @@
 		</section>
 	</main>
 
-	<section class="relative z-10 mx-auto max-w-6xl px-4 pt-10 pb-24 sm:px-6">
+	<section id="activity" class="relative z-10 mx-auto max-w-6xl px-4 pt-10 pb-24 sm:px-6">
 		<div class="flex items-center justify-between gap-2">
-			<h2 class="text-sm font-mono uppercase tracking-widest text-slate-500">Live activity</h2>
-			{#if modeInfo}<span class="text-xs text-slate-500">{modeInfo}</span>{/if}
+			<h2 class="term-head font-mono text-sm uppercase tracking-widest text-chalk-dim">Live activity</h2>
+			{#if modeInfo}<span class="font-mono text-xs text-chalk-dim">{modeInfo}</span>{/if}
 		</div>
-		<div class="mt-2">
+		<div class="mt-3">
 			<ActivityLog active={busy} entries={logEntries} query={lastQuery} stores={lastStoreNames} bind:scrollEl={logScroll} />
 		</div>
 
 		{#if error}
-			<div class="mt-4 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">⚠ {error}</div>
+			<div class="mt-4 border-2 border-bad/50 bg-bad/10 px-4 py-3 font-mono text-sm text-bad">⚠ {error}</div>
 		{/if}
 
 		{#if result && insights}
-			<div class="mt-8 space-y-6">
+			<div id="results" class="mt-10 space-y-6">
 				<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-					<h2 class="text-xl font-bold text-white">Results for “{lastQuery}”</h2>
-					<button onclick={exportCSV} disabled={!products.length} class="disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-2 rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-300 transition-colors hover:bg-emerald-500/20">
+					<h2 class="term-head font-mono text-xl font-bold text-chalk">Results for “{lastQuery}”</h2>
+					<button onclick={exportCSV} disabled={!products.length} class="disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-2 border-2 border-signal bg-signal px-4 py-2 font-mono text-sm font-bold text-ink transition-colors hover:bg-transparent hover:text-signal">
 						<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
-						Export CSV ({products.length})
+						export csv ({products.length})
 					</button>
 				</div>
 
@@ -202,25 +211,27 @@
 
 				{#if statuses.length}
 					<div class="flex flex-wrap items-center gap-2">
-						<span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Sources:</span>
+						<span class="font-mono text-xs font-semibold uppercase tracking-wider text-chalk-dim">Sources:</span>
 						{#each statuses as st}
-							<span class="inline-flex items-center gap-1.5 rounded-xl border px-2.5 py-1.5 text-xs {st.count > 0 ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-300' : 'border-rose-500/40 bg-rose-500/10 text-rose-300'}">
-								<span class="h-1.5 w-1.5 rounded-full {st.count > 0 ? 'bg-emerald-400' : 'bg-rose-400'}"></span>
+							<span class="inline-flex items-center gap-1.5 border-2 px-2.5 py-1 font-mono text-xs {st.count > 0 ? 'border-good/60 bg-good/10 text-good' : 'border-bad/60 bg-bad/10 text-bad'}">
+								<span class="h-1.5 w-1.5 rounded-none {st.count > 0 ? 'bg-good' : 'bg-bad'}"></span>
 								{st.name}
-								<span class="opacity-70">{st.count > 0 ? `${st.count} found` : 'blocked'}</span>
+								<span class="opacity-70">[{st.count > 0 ? `${st.count} found` : 'blocked'}]</span>
 							</span>
 						{/each}
 					</div>
 				{/if}
 
 				<header class="mb-3 flex items-center justify-between">
-					<h3 class="text-sm font-semibold text-slate-200">All listings</h3>
+					<h3 class="term-head font-mono text-sm text-chalk">All listings</h3>
 				</header>
 				<ProductGrid products={products} currency={insights.currency} />
 			</div>
 		{:else if !busy && !error}
-			<div class="mt-8 rounded-2xl border border-dashed border-slate-800 bg-slate-900/30 p-10 text-center text-sm text-slate-500">
-				No results yet — run a search above and the best-price recommendation will appear here. The live activity log updates as we scrape each store.
+			<div class="mt-8 border-2 border-dashed border-border-term bg-ink px-6 py-12 text-center font-mono text-sm text-chalk-dim">
+				<span class="text-signal">$</span> no results yet — run a search above and the best-price recommendation will appear here.
+				<br />
+				the live activity log updates as we scrape each store.
 			</div>
 		{/if}
 	</section>

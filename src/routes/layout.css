@@ -1,1 +1,130 @@
 @import 'tailwindcss';
+
+/* Ported terminal aesthetic from the portfolio design language. */
+@font-face {
+	font-family: 'Departure Mono';
+	src: url('/fonts/DepartureMono-Regular.woff2') format('woff2');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+@theme {
+	--font-mono: 'Departure Mono', 'Fira Code', ui-monospace, 'Courier New', monospace;
+	--font-sans: 'Departure Mono', 'Fira Code', ui-monospace, 'Courier New', monospace;
+
+	--color-ink: #181515;
+	--color-ink-soft: #211d1d;
+	--color-ink-line: #121010;
+	--color-chalk: #a9a9b3;
+	--color-chalk-dim: #76767f;
+	--color-signal: #cba6f7;
+	--color-signal-deep: #a997d6;
+	--color-border-term: #4d4e51;
+	--color-good: #7bd88f;
+	--color-bad: #f26d6d;
+}
+
+:root {
+	--bg: #181515;
+	--fg: #a9a9b3;
+	--accent: #cba6f7;
+	--border: #4d4e51;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	background-color: var(--bg);
+	color: var(--fg);
+	font-family: 'Departure Mono', 'Fira Code', 'Courier New', monospace;
+	line-height: 1.54;
+	font-size: 16px;
+	-webkit-font-smoothing: antialiased;
+}
+
+::selection {
+	background: var(--accent);
+	color: var(--bg);
+}
+
+/* Custom scrollbar (portfolio signature). */
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+::-webkit-scrollbar-track {
+	background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+	background: var(--border);
+}
+::-webkit-scrollbar-thumb:hover {
+	background: var(--accent);
+}
+
+/* Terminal heading sweep-fill — the portfolio's signature hover. */
+.term-head {
+	position: relative;
+	display: inline-block;
+	z-index: 1;
+	padding: 0.08rem 0.35rem;
+	margin-left: -0.35rem;
+	transition: color 0.3s ease;
+}
+.term-head::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 100%;
+	background-color: var(--accent);
+	z-index: -1;
+	transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.term-head::after {
+	content: ' [+]';
+	font-weight: 700;
+	color: var(--accent);
+	transition: color 0.3s ease;
+}
+
+/* Pretty-print curly quotes: keep apostrophes/slashes as terminal commands. */
+.term-arrow::before {
+	content: '▸ ';
+	color: var(--accent);
+}
+
+/* Boxy card (portfolio uses straight corners + 2px border). */
+.term-card {
+	border: 2px solid var(--border);
+	border-radius: 0;
+	background-color: var(--ink);
+}
+
+.term-card-hover {
+	transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.term-card-hover:hover {
+	border-color: var(--accent);
+	background-color: rgba(242, 162, 114, 0.06);
+	transform: translateY(-2px);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+.term-link {
+	color: var(--accent);
+	text-decoration: none;
+	border-bottom: 1px solid var(--accent);
+	padding: 0 0.05rem;
+	transition: all 0.15s ease-in-out;
+}
+.term-link:hover {
+	background-color: var(--accent);
+	color: var(--bg);
+	border-bottom-color: var(--accent);
+}
