@@ -55,9 +55,9 @@ export function normalizeProduct(p, storeId, storeName) {
 }
 
 /**
- * Filter products to real matches of the query, drop accessory spam, and remove
- * placeholder/low-outlier prices (e.g. $1 auction starting bids) that would
- * distort the "best price" suggestion.
+ * Filter products to real matches of the query and drop accessory spam.
+ * Note: no price-range filtering is applied — a price is only required to be
+ * present and positive so statistics stay meaningful.
  * @param {Product[]} products
  * @param {string} query
  * @returns {Product[]}
@@ -70,13 +70,6 @@ export function filterRelevant(products, query) {
 	const trimmedTokens = tokens.slice(0, Math.max(3, Math.ceil(tokens.length / 2)));
 	const productLike = tokens.length >= 2;
 
-	const priced = products.filter((p) => p.price && p.price > 0);
-	const prices = priced.map((p) => p.price).sort((a, b) => a - b);
-	const median = prices.length ? prices[Math.floor(prices.length / 2)] : 0;
-	// Guard against auction starting-bids and placeholders: a real listing is
-	// almost never below 8% of the median price of the set.
-	const lowFloor = Math.max(3, median * 0.08);
-
 	return products.filter((p) => {
 		const title = (p.title || '').toLowerCase();
 		if (productLike) {
@@ -86,7 +79,6 @@ export function filterRelevant(products, query) {
 		const matchedKeyword = EXTRA_KEYWORDS.find((kw) => title.includes(kw));
 		if (matchedKeyword && productLike && !query.toLowerCase().includes(matchedKeyword)) return false;
 		if (!p.price || p.price <= 0) return false;
-		if (prices.length >= 5 && p.price < lowFloor) return false;
 		return true;
 	});
 }
